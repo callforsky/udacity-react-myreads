@@ -3,6 +3,7 @@ import React from 'react'
 import './App.css'
 import { Link } from 'react-router-dom'
 import { Route } from 'react-router-dom'
+import Search from './Search'
 
 class BooksApp extends React.Component {
   state = {
@@ -18,29 +19,7 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route path='/create' render={() => (
-          // JSX for Search Page
-          <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
-        )} />
+        <Route path='/search' component={Search} />
 
         <Route exact path='/' render={() => (
           <div className="list-books">
@@ -85,7 +64,7 @@ class BooksApp extends React.Component {
                               </select>
                             </div>
                           </div>
-                          <div className="book-title">Ender s Game</div>
+                          <div className="book-title">Ender's Game</div>
                           <div className="book-authors">Orson Scott Card</div>
                         </div>
                       </li>
@@ -198,7 +177,7 @@ class BooksApp extends React.Component {
                 </div>
               </div>
             </div>
-            // the round button in the lower right corner, it directs to the Search page if clicked
+            {/* the round button in the lower right corner, it directs to the Search page if clicked */}
             <div className="open-search">
               {/* <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a> */}
               <Link to="/search">Search</Link>
