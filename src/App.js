@@ -13,7 +13,10 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    books: []
+    allBooks: [],
+    currentlyReading: [],
+    wantToRead: [],
+    read: []
   }
 
   /** componentDidMount is the lifecycle hook that is run right after
@@ -23,7 +26,12 @@ class BooksApp extends React.Component {
   **/
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-        this.setState(() => ({ books }))
+        this.setState({
+          allBooks: books,
+          currentlyReading: books.filter(book => book.shelf==='currentlyReading'),
+          wantToRead: books.filter(book => book.shelf==='wantToRead'),
+          read: books.filter(book => book.shelf==='read')
+        })
     })
   }
 
@@ -39,7 +47,11 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <Bookshelf />
+                <Bookshelf
+                  currentlyReading={this.state.currentlyReading}
+                  wantToRead={this.state.wantToRead}
+                  Rread={this.state.read}
+                />
               </div>
             </div>
             {/* the round button in the lower right corner, it directs to the Search page if clicked */}
