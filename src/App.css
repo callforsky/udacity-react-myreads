@@ -114,6 +114,7 @@ body, .app {
   justify-content: center;
   flex-wrap: wrap;
 }
+
 .books-grid li {
   padding: 10px 15px;
   text-align: left;
@@ -171,4 +172,9 @@ body, .app {
   padding: 20px 10px 0;
   text-align: center;
   font-size: 0.8em;
+}
+
+/* remove the order number ahead of a bookshelf's name */
+.shelves-grid {
+  list-style-type: none;
 }
