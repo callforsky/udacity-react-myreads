@@ -7,31 +7,29 @@ import Bookshelf from './Bookshelf'
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
     allBooks: [],
     currentlyReading: [],
     wantToRead: [],
     read: []
   }
 
-  /** componentDidMount is the lifecycle hook that is run right after
-  the component is added to the DOM and should be used if you're fetching
-  remote data or doing an Ajax request. This is used here to get all books
-  from the database
+  /**
+    componentDidMount is the lifecycle hook that is run right after
+    the component is added to the DOM and should be used if you're fetching
+    remote data or doing an Ajax request. This is used here to get all books
+    from the database
   **/
   componentDidMount() {
     this.loadBooksFromDatabase()
   }
 
+  // the function below was once defined inside componentDidMount, which is
+  // not a very good practice, according to stackoverflow. So I moved the below
+  // function outside.
   loadBooksFromDatabase() {
     BooksAPI.getAll().then((books) => {
         this.setState({
-          allBooks: books,
+          existingBooks: books,
           currentlyReading: books.filter(book => book.shelf==='currentlyReading'),
           wantToRead: books.filter(book => book.shelf==='wantToRead'),
           read: books.filter(book => book.shelf==='read')
@@ -49,8 +47,15 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route path='/search' component={Search} />
-
+        {/* search and add a book page */}
+        <Route path='/search' render={() =>
+          <Search
+            existingBooks={this.state.existingBooks}
+            // changeShelf is a function passed to child Bookshelf
+            changeShelf={this.changeShelf}
+          />
+        }/>
+        {/* homepage */}
         <Route exact path='/' render={() => (
           <div className="list-books">
             <div className="list-books-title">
@@ -69,8 +74,7 @@ class BooksApp extends React.Component {
             </div>
             {/* the round button in the lower right corner, it directs to the Search page if clicked */}
             <div className="open-search">
-              {/* <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a> */}
-              <Link to="/search">Search</Link>
+              <Link to="/search">Add a book</Link>
             </div>
           </div>
         )} />
