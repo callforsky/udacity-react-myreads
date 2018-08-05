@@ -25,6 +25,10 @@ class BooksApp extends React.Component {
   from the database
   **/
   componentDidMount() {
+    this.loadBooksFromDatabase()
+  }
+
+  loadBooksFromDatabase() {
     BooksAPI.getAll().then((books) => {
         this.setState({
           allBooks: books,
@@ -32,6 +36,13 @@ class BooksApp extends React.Component {
           wantToRead: books.filter(book => book.shelf==='wantToRead'),
           read: books.filter(book => book.shelf==='read')
         })
+    })
+  }
+
+  changeShelf = (selectedBook, newShelf) => {
+    BooksAPI.update(selectedBook, newShelf).then(() => {
+      // reload the books after we update selected book's shelf in the database
+      this.loadBooksFromDatabase()
     })
   }
 
@@ -51,6 +62,8 @@ class BooksApp extends React.Component {
                   currentlyReading={this.state.currentlyReading}
                   wantToRead={this.state.wantToRead}
                   read={this.state.read}
+                  // changeShelf is a function passed to child Bookshelf
+                  changeShelf={this.changeShelf}
                 />
               </div>
             </div>
