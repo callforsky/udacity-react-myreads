@@ -3,7 +3,16 @@ import { Link } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 
 class Search extends Component {
+  state = {
+    query: ''
+  }
   render() {
+    const { query } = this.state
+    const { books } = this.props
+    const showBooks = query === ''
+      ? books
+      : books.filter((book) => book.name)
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -21,7 +30,9 @@ class Search extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            <li>test1</li>
+          </ol>
         </div>
       </div>
     )
