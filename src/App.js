@@ -50,7 +50,7 @@ class BooksApp extends React.Component {
                 <Bookshelf
                   currentlyReading={this.state.currentlyReading}
                   wantToRead={this.state.wantToRead}
-                  Rread={this.state.read}
+                  read={this.state.read}
                 />
               </div>
             </div>
