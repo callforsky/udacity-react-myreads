@@ -15,12 +15,23 @@ class Search extends Component {
     } else {
       this.setState({query: query.trim()})
       BooksAPI.search(query).then((booksFound) => {
-        if (booksFound) {
-          booksFound.map(book => (this.props.existingBooks.filter((existingBook) => existingBook.id === book.id).map(existingBook => book.shelf = existingBook.shelf)))
+        if (booksFound && booksFound.length) {
+          booksFound.map(book => (this.props.existingBooks.filter(existingBook => existingBook.id === book.id).map(existingBook => book.shelf = existingBook.shelf)))
+          booksFound.map(book => {
+            if (book.hasOwnProperty('shelf')) {
+              console.log("I have shelf!")
+            } else {
+              console.log("I do not!")
+              book.shelf="none"
+            }
+          })
+          // (book.hasOwnProperty('shelf')) && book.shelf="none"
+          this.setState({booksFound})
           // booksFound.map(bookFound => {
           //   this.props.existingBooks.find(existingBook => existingBook.id === bookFound.id) ? booksFound.shelf=this.props.existingBook.shelf : booksFound.shelf="none"
-          }
-          this.setState({booksFound})
+        } else {
+          booksFound = []
+        }
         // I prefer to break down the long inline into piece for easier debugging
         // const existingTitles = this.props.existingBooks.map(book => book.title)
         // console.log(booksFound)
