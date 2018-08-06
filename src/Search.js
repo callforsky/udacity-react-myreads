@@ -15,11 +15,30 @@ class Search extends Component {
     } else {
       this.setState({query: query.trim()})
       BooksAPI.search(query).then((booksFound) => {
-        if (booksFound.error) {
-          booksFound = []
-        } else {
+        if (booksFound) {
           this.setState({booksFound})
         }
+        // I prefer to break down the long inline into piece for easier debugging
+        // const existingTitles = this.props.existingBooks.map(book => book.title)
+        // console.log(booksFound)
+        // console.log(existingTitles)
+        // const existingShelf = this.props.existingBooks.map(book => book.shelf)
+        // console.log(existingShelf)
+        // const booksNotOnShelf = booksFound.filter(item => existingTitles.indexOf(item.title) === -1)
+        // console.log(booksNotOnShelf)
+        // booksNotOnShelf.map(book => book.shelf="none")
+        // console.log(booksNotOnShelf)
+        // const booksOnShelf = booksFound.filter(item => existingTitles.indexOf(item.title) !== -1)
+        // booksOnShelf.map(book => book.shelf=)
+        // const booksFound2 = booksFound.filter(book => existingBooks.)
+        // console.log(booksFound2)
+        // const booksFound2 = booksFound.map(bookFound => existingTitles.indexOf(bookFound.title) === -1 ? bookFound.shelf="none" : bookFound.shelf="read")
+        // const booksOnShelf = booksFound.map(book => this.props.existingBooks.filter(existingBook => existingBook.title === book.title)).filter(book => Object.keys(book).length !== 0)
+        // console.log(booksOnShelf)
+        // const booksFound2 = booksOnShelf.concat(booksNotOnShelf)
+        // console.log(booksFound)
+        // booksFound.map(bookFound => (
+        //   this.props.existingBooks.filter((existingBook) => existingBook.title === bookFound.title).map(bookFound.shelf = existingBook.shelf)))
       })
     }
   }
@@ -44,13 +63,13 @@ class Search extends Component {
               <li key={book.id}>
                 <div className="book">
                   <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined ? book.imageLinks.thumbnail : ''})` }}></div>
                     <div className="book-shelf-changer">
                       {/*
                         add attributes in <select> to make the bookshelf switch working
                         the key is to set the default value
                       */}
-                      <select value="none" onChange={(event) => {
+                      <select value={book.shelf} onChange={(event) => {
                         this.props.changeShelf(book, event.target.value)}
                       }>
                         <option value="move" disabled>Move to...</option>
