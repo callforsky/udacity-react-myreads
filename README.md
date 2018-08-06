@@ -11,7 +11,7 @@ To get started playing around with this app right away:
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
-## What You're Getting
+## Project Structure
 ```bash
 ├── CONTRIBUTING.md
 ├── README.md - This file.
@@ -23,6 +23,8 @@ To get started playing around with this app right away:
 └── src
     ├── App.css # Styles for your app. Feel free to customize this as you desire.
     ├── App.js # This is the root of your app. Contains static HTML right now.
+    ├── Bookshelf.js # This is the component to display bookshelves
+    ├── Search.js # This is the component to render search page
     ├── App.test.js # Used for testing. Provided with Create React App. Testing is encouraged, but not required.
     ├── BooksAPI.js # A JavaScript API for the provided Udacity backend. Instructions for the methods are below.
     ├── icons # Helpful images for your app. Use at your discretion.
@@ -33,9 +35,16 @@ To get started playing around with this app right away:
     └── index.js # You should not need to modify this file. It is used for DOM rendering only.
 ```
 
-Remember that good React design practice is to create new JS files for each component and use import/require statements to include them where they are needed.
+## Project Glitches to Fix
 
-## Backend Server
+This project is of course not perfect. There are some glitches that I wish to fix in the future:
+
+* Warning Message to be fixed: `./src/Search.js
+  Line 19:  Expected to return a value in arrow function  array-callback-return`
+* Search result sometimes returns duplicate books (same title, but different id). An example is searching for 'linux'
+* Codes to display books inside Bookshelves component should become another component for better management and code simplification
+
+## Backend Server (Provided by Udacity Team)
 
 To simplify your development process, we've provided a backend server for you to develop against. The provided file [`BooksAPI.js`](src/BooksAPI.js) contains the methods you will need to perform necessary operations on the backend:
 
@@ -87,6 +96,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+This repository is based on the knowledge from Udacity React Nanodegree Program and from many Google searches.
