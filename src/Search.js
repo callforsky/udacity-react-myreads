@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 
 class Search extends Component {
@@ -15,44 +14,22 @@ class Search extends Component {
     } else {
       this.setState({query: query.trim()})
       BooksAPI.search(query).then((booksFound) => {
+        // use if else to catch the error when booksFound is empty
         if (booksFound && booksFound.length) {
+          // loop through returned result and assign them the self value if already on a shelf
           booksFound.map(book => (this.props.existingBooks.filter(existingBook => existingBook.id === book.id).map(existingBook => book.shelf = existingBook.shelf)))
+          // assign shelf "none" to the rest of books who are not on a shelf
+          // the tricky part is that the shelf property is missing in their objects
+          // so I have to check and assign a new property of shelf
           booksFound.map(book => {
-            if (book.hasOwnProperty('shelf')) {
-              console.log("I have shelf!")
-            } else {
-              console.log("I do not!")
+            if (!book.hasOwnProperty('shelf')) {
               book.shelf="none"
             }
           })
-          // (book.hasOwnProperty('shelf')) && book.shelf="none"
           this.setState({booksFound})
-          // booksFound.map(bookFound => {
-          //   this.props.existingBooks.find(existingBook => existingBook.id === bookFound.id) ? booksFound.shelf=this.props.existingBook.shelf : booksFound.shelf="none"
         } else {
           booksFound = []
         }
-        // I prefer to break down the long inline into piece for easier debugging
-        // const existingTitles = this.props.existingBooks.map(book => book.title)
-        // console.log(booksFound)
-        // console.log(existingTitles)
-        // const existingShelf = this.props.existingBooks.map(book => book.shelf)
-        // console.log(existingShelf)
-        // const booksNotOnShelf = booksFound.filter(item => existingTitles.indexOf(item.title) === -1)
-        // console.log(booksNotOnShelf)
-        // booksNotOnShelf.map(book => book.shelf="none")
-        // console.log(booksNotOnShelf)
-        // const booksOnShelf = booksFound.filter(item => existingTitles.indexOf(item.title) !== -1)
-        // booksOnShelf.map(book => book.shelf=)
-        // const booksFound2 = booksFound.filter(book => existingBooks.)
-        // console.log(booksFound2)
-        // const booksFound2 = booksFound.map(bookFound => existingTitles.indexOf(bookFound.title) === -1 ? bookFound.shelf="none" : bookFound.shelf="read")
-        // const booksOnShelf = booksFound.map(book => this.props.existingBooks.filter(existingBook => existingBook.title === book.title)).filter(book => Object.keys(book).length !== 0)
-        // console.log(booksOnShelf)
-        // const booksFound2 = booksOnShelf.concat(booksNotOnShelf)
-        // console.log(booksFound)
-        // booksFound.map(bookFound => (
-        //   this.props.existingBooks.filter((existingBook) => existingBook.title === bookFound.title).map(bookFound.shelf = existingBook.shelf)))
       })
     }
   }
@@ -61,8 +38,9 @@ class Search extends Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          {/* <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a> */}
+          {/* The back arrow that directs to the homepage */}
           <Link className="close-search" to="/">Close</Link>
+          {/* The search bar */}
           <div className="search-books-input-wrapper">
             <input
               type="text"
@@ -81,7 +59,7 @@ class Search extends Component {
                     <div className="book-shelf-changer">
                       {/*
                         add attributes in <select> to make the bookshelf switch working
-                        the key is to set the default value
+                        the key is to set the default value for shelf
                       */}
                       <select value={book.shelf} onChange={(event) => {
                         this.props.changeShelf(book, event.target.value)}
